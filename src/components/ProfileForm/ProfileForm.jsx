@@ -3,7 +3,12 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore, doc, getDoc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import Header from '../Header/Header';
-import algo from '../Assets/dsa.jpg';
+import algo from '../Assets/dsaf.png';
+import name from '../Assets/name.png';
+import id from '../Assets/id.png';
+import sec from '../Assets/class.png';
+import mobile from '../Assets/mobile.png';
+import college from '../Assets/clgmail.png';
 
 function UserDetailsForm() {
   const [formData, setFormData] = useState({
@@ -91,33 +96,39 @@ function UserDetailsForm() {
     <>    
     <Header/>
     <div className="mainOnce">
-            <div>
-                <img className="imageOnce" src={algo} alt=""></img>
-            </div>
-        <div className="containerOnce">
-            <div className="text">User Details Form</div>
+        <div className="container">
+            <div className="textOnce">User Details Form</div>
             <div className='underline user'></div>
             <form className="inputs" onSubmit={handleSubmit}>
                 <div className="input">
+                    <img className="iconsf" src={name} alt=""></img>
                     <input className="credentials" type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder="Full name" required/>
                 </div>
+                
                 <div className="input">
+                    <img className="iconsf" src={id} alt=""></img>
                     <input className="credentials" type="number" name="enrollmentNumber" value={formData.enrollmentNumber} onChange={handleInputChange} placeholder='Enrollment number' required/>
                 </div>
                 <div className="input">
+                    <img className="iconsf" src={sec} alt=""></img>
                     <input className="credentials" type="text" name="section" value={formData.section} onChange={handleInputChange} placeholder='Section' maxLength={1} required />
                 </div>
                 <div className="input">
+                    <img className="iconsf" src={mobile} alt=""></img>
                     <input className="credentials" type="tel" name="mobileNumber" value={formData.mobileNumber} onChange={handleInputChange} placeholder='Mobile number' maxLength={10} required/>
                 </div>
                 <div className="input">
-                    <div>
+                    <div className='input'>
+                        <img className="iconsf" src={college} alt=""></img>
                         <input className="credentials" type="email" name="collegeEmail" value={formData.collegeEmail} onChange={handleInputChange} placeholder='College Email ID' required/>
                     </div>
                 {emailError && <p style={{ color: 'red' }}>{emailError}</p>}
                 </div>
                 <button className="submit" type="submit">Submit</button>
             </form>
+        </div>
+        <div>
+            <img className="imageOnce" src={algo} alt=""></img>
         </div>
     </div>
     </>

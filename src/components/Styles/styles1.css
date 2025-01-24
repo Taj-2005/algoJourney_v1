@@ -11,7 +11,17 @@
         justify-content: center;
         align-items: center;
     }
+    .mainOnce{
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+    }
     .container{
+        width: 80vw !important;
+        height: 50vh !important;
+        margin-top: -8vh;
+    }
+    .containerOnce{
         width: 80vw !important;
         height: 50vh !important;
         margin-top: -8vh;
@@ -30,6 +40,17 @@
     }
     .body{
         height: 100vh;
+    }
+    .imageOnce{
+        width: 80vw !important;
+        height: 50vw !important;
+    }
+    .textOnce{
+        font-size: 1.5em !important;
+    }
+    .iconsf{
+        width: 15px !important;
+        height: 15px !important;
     }
 }
 body{
@@ -116,14 +137,13 @@ body{
     transition: transform 1s ease;
 }
 .containerOnce:hover{
-    transform: translateY(-20px);
-    box-shadow: 1px 1px 1px 1px grey;
+    transform: scale(1.1);
+    box-shadow: 1px 1px 10px 1px grey;
     transition: transform 1s ease;
 }
 .containerOnce{
-    background-color:#f3f3f3;
+    background-color:#f4f6fd;
     display: flex;
-    flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 40vw;
@@ -133,6 +153,12 @@ body{
     transition: transform 1s ease;
 }
 .text{
+    text-align: center;
+    color: black;
+    font-weight: 900;
+    font-size: 2em;
+}
+.textOnce{
     text-align: center;
     color: black;
     font-weight: 900;
@@ -157,6 +183,11 @@ body{
     align-items: center;
 }
 .icons{
+    width: 30px;
+    height: 30px;
+    margin-right: 1vw;
+}
+.iconsf{
     width: 30px;
     height: 30px;
     margin-right: 1vw;

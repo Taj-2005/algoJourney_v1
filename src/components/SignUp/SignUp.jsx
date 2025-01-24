@@ -5,6 +5,7 @@ import { auth } from "../../firebase/firebaseConfig.js";
 import '../Styles/styles1.css';
 import mail from '../Assets/email2.png';
 import pass from '../Assets/password.png';
+import padlock from '../Assets/padlock.png';
 import algo from '../Assets/dsa.jpeg';
 
   function SignUp() {
@@ -59,7 +60,7 @@ import algo from '../Assets/dsa.jpeg';
                 <input className="credentials" type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required/>
             </div>
             <div className="input">
-                <img className="icons" src={pass} alt=""></img>
+                <img className="icons" src={padlock} alt=""></img>
                 <input className="credentials" type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required/>
             </div>
             <button className="submit" type="submit">Sign Up</button>
