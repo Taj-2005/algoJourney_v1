@@ -52,6 +52,10 @@
         width: 15px !important;
         height: 15px !important;
     }
+    .icon{
+        width: 30px !important;
+        height: 30px !important;
+    }
 }
 body{
     margin: 0;
