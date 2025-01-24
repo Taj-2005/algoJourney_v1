@@ -28,6 +28,9 @@
         width: 30vw !important;
         height: 5vh !important;
     }
+    .body{
+        height: 100vh;
+    }
 }
 body{
     margin: 0;
