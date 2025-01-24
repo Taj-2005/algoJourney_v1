@@ -69,7 +69,19 @@
         font-size: 0.8em !important;
         text-align: center !important;
     }
-
+    .topics{
+        padding-left: 3vw !important;
+        row-gap: 5vw;
+        column-gap: 5vw !important;
+    }
+    .topic{
+        height: 25vw !important;
+        font-size: 0.5em !important;
+        font-weight: 100 !important;
+    }
+    .questionCol{
+        padding-left: 20px !important;
+    }
 }
 body{
     margin: 0;
@@ -349,7 +361,6 @@ header{
     justify-content: center;
     row-gap: 5vw;
     column-gap: 5vh;
-    height: 80vh;
     scrollbar-width: thin;
     scrollbar-color: #f3f3f3 #f3f3f3;
     height: 90vh;
@@ -388,37 +399,6 @@ header{
 #timeComplexity{
     margin-top: 20px;
 }
-.arrow{
-    height: 3vh;
-    border-radius: 100%;
-    margin-right: 1vw;
-}
-@media (max-width:769px){
-    .topic{
-        width: 35vw;
-        height: 35vw;
-    }
-    .topics{
-        grid-template-columns: repeat(2,1fr);
-        padding-left:0;
-    }
-    .topic:nth-child(odd){
-        margin-left: 6vw;
-    }
-    header{
-        height: 4vh;
-    }
-    .tooltip{
-        top: 0;
-        left: -20vw;
-    }
-    .logout{
-        width: 17vw;
-        height: 5vh;
-        padding-right: 5vw;
-    }
-    
-}
 
 body{
     margin: 0;
@@ -437,6 +417,10 @@ body{
     align-items: center;
     column-gap: 1vw;
     row-gap: 1vh;
+}
+.questionList{
+    display: flex;
+    align-items: center;
 }
 .questionCol{
     display: flex;
@@ -472,17 +456,13 @@ body{
     align-items: center;
     justify-content: center;
 }
-.questionList{
-    display: flex;
-    align-items: center;
-}
 .link{
     display: flex;
     align-items: center;
     justify-content: center;
     width: 5vh;
     height: 5vh;
-    background-color: white;
+    background: transparent;
     border:none;
     box-shadow: 1px 1px 10px 1px white;
     transition: transform 1s ease,box-shadow 1s ease;
@@ -494,6 +474,7 @@ body{
     transition: box-shadow 1s ease;
 }
 .check{
-    transform: scale(3);
+    scale: 2;
     border: none;
+    background: transparent;
 }
