@@ -58,7 +58,7 @@ function UserDetailsForm() {
   // Validate the college email after submitting the form
   const validateEmail = (email) => {
     const validEmailPattern =
-      /(@nst.rishihood.edu.in|@Newtonschool.Co)$/; // Check if email contains valid domain
+      /(@nst.rishihood.edu.in|@Newtonschool.Co|@learner.rishihood.edu.in|@rishihood.edu.in)$/; // Check if email contains valid domain
     return validEmailPattern.test(email);
   };
 
