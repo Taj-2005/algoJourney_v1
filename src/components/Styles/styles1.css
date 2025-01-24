@@ -476,5 +476,5 @@ body{
 .check{
     scale: 2;
     border: none;
-    background: transparent;
+    background-color: green;
 }
