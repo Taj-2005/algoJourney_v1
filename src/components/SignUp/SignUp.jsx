@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig.js";
 import '../Styles/styles1.css';
-import mail from '../Assets/mail.jpg';
-import pass from '../Assets/password.jpg';
+import mail from '../Assets/email2.png';
+import pass from '../Assets/password.png';
 import algo from '../Assets/dsa.jpeg';
 
   function SignUp() {
@@ -35,8 +35,7 @@ import algo from '../Assets/dsa.jpeg';
   return (
     <>
     <div className="alignment">
-      {/* <img src="" alt=""></img> */}
-      <h1>AlgoJourney</h1>
+      <h1 className="h1">AlgoJourney</h1>
       <p>
         Already have an account?{" "}
         <span className="already" onClick={() => navigate("/Login")}>
@@ -46,9 +45,6 @@ import algo from '../Assets/dsa.jpeg';
     </div>
     <hr></hr>
     <div className="main">
-        <div>
-          <img className="image" src={algo} alt=""></img>
-        </div>
         <div className="container">
           <div className="text">Sign Up</div>
           <div className="underline"></div>
@@ -68,6 +64,9 @@ import algo from '../Assets/dsa.jpeg';
             </div>
             <button className="submit" type="submit">Sign Up</button>
           </form>
+        </div>
+        <div>
+          <img className="image" src={algo} alt=""></img>
         </div>
     </div>
     </>
