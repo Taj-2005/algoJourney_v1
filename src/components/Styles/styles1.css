@@ -56,6 +56,20 @@
         width: 30px !important;
         height: 30px !important;
     }
+    .user-icon-wrapper{
+        margin-right: 5vw !important;
+    }
+    .tooltip{
+    left: -20vw !important;
+    top: -1.5vw !important;
+    padding: 5px !important;
+    text-align: center !important;
+    }
+    .logout{
+        font-size: 0.8em !important;
+        text-align: center !important;
+    }
+
 }
 body{
     margin: 0;
@@ -285,6 +299,7 @@ header{
     transition: opacity 0.2s ease;
     width: 5vw;
     height: 3vh;
+    text-align: center;
 }
 .logout {
   background-color: #1A1A1A;
@@ -296,6 +311,7 @@ header{
   font-size: 14px;
   width: 5vw;
   height: 4vh;
+  text-align: center;
 }
 
 .logout:hover {
