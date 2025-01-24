@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig";
-import mail from '../Assets/mail.jpg';
-import pass from '../Assets/password.jpg';
+import mail from '../Assets/email2.png';
+import pass from '../Assets/password.png';
 import algo from '../Assets/dsa.jpeg';
 
 function Login() {
@@ -61,9 +61,9 @@ function Login() {
     <>
         <div className="alignment">
         {/* <img src="" alt=""></img> */}
-        <h1>AlgoJourney</h1>
+        <h1 className="h1">AlgoJourney</h1>
         <p>
-            Don’t have an account?{" "}
+            Don’t have an account?{" "}<br></br>
             <span className="already" onClick={() => navigate("/Signup")}>
                 Create one
             </span>

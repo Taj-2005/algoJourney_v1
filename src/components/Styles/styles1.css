@@ -1,8 +1,44 @@
 /* Login Signup Page */
+@media (max-width: 575px) {
+    .h1{
+        font-size: 20px;
+    }
+    .alignment p{
+        font-size: 12px;
+    }
+    .main{
+        flex-direction: column-reverse;
+        justify-content: center;
+        align-items: center;
+    }
+    .container{
+        width: 80vw !important;
+        height: 50vh !important;
+        margin-top: -8vh;
+    }
+    .image{
+        width: 60vw !important;
+        height: 60vw !important;
+        margin-top: -3vh;
+    }
+    .remember{
+        gap: 2vw !important;
+    }
+    .submit{
+        width: 30vw !important;
+        height: 5vh !important;
+    }
+}
 body{
     margin: 0;
     padding: 0;
     height: 100vh;
+}
+.alignment p{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
 }
 *{
     margin: 0;
@@ -71,6 +107,11 @@ body{
     border-radius: 30px;
     transition: transform 1s ease;
 }
+.container:hover{
+    transform: scale(1.1);
+    box-shadow: 1px 1px 10px 1px grey;
+    transition: transform 1s ease;
+}
 .containerOnce:hover{
     transform: translateY(-20px);
     box-shadow: 1px 1px 1px 1px grey;
@@ -86,11 +127,6 @@ body{
     height: 60vh;
     border: 1px solid #e1e1e1;
     border-radius: 30px;
-    transition: transform 1s ease;
-}
-.container:hover{
-    transform: translateY(-20px);
-    box-shadow: 1px 1px 1px 1px grey;
     transition: transform 1s ease;
 }
 .text{
@@ -120,7 +156,7 @@ body{
 .icons{
     width: 30px;
     height: 30px;
-    border-radius: 50%;
+    margin-right: 1vw;
 }
 .credentials{
     width: 30vh;
@@ -133,6 +169,10 @@ body{
 }
 
 .remember{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5vw;
     color: black;
     font-weight: 700;
 }
