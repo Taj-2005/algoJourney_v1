@@ -1,3 +1,5 @@
+// git add . && git commit -m "dsa" && git push
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
