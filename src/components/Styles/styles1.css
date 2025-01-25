@@ -82,6 +82,9 @@
     .questionCol{
         padding-left: 20px !important;
     }
+    .questionList{
+        padding-top: -10vh !important;
+    }
 }
 body{
     margin: 0;
