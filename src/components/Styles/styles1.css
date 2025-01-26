@@ -385,6 +385,7 @@ header{
     transition: color 2s ease, transform 1s ease,box-shadow 1s ease;
     background-color: #FFFFFF;
     font-size: 1vw;
+    flex-direction: column;
 }
 .topic:hover{
     color: grey;

@@ -9,6 +9,46 @@ import {
   getDoc,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import * as XLSX from 'xlsx';
+import { db } from '../../../firebase/firebaseConfig';
+import {getDocs} from 'firebase/firestore';
+
+
+async function exportToExcelT() {
+    const data = [];
+    try {
+        const querySnapshot = await getDocs(collection(db, "users_TwoPointers"));
+        if (querySnapshot.empty) {
+        console.log('No documents found in the "users" collection.');
+        alert('No data available to export. The "users" collection is empty.');
+        return;
+        }
+
+        querySnapshot.forEach((doc) => {
+        const submission = doc.data();
+        data.push([
+            submission.name,
+            submission.enrollmentNumber,
+            submission.checkboxCount,
+            submission.section,
+        ]);
+        });
+
+        const ws = XLSX.utils.aoa_to_sheet([
+        ["Name", "Enrollment Number", "N of Q Solved","Section"],
+        ...data,
+        ]);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Submissions Data");
+        XLSX.writeFile(wb, "twoPointers_data.xlsx");
+
+        console.log("Export to Excel complete!");
+        alert("Export to Excel completed successfully.");
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        alert("An error occurred while exporting the data. Please check the console for more details.");
+    }
+    };
 
 function TwoPointers() {
   const [questions, setQuestions] = useState([]);
@@ -125,6 +165,7 @@ function TwoPointers() {
   return (
     <>
       <Header />
+      {/* <button onClick={exportToExcelT}>Export to Excel</button> */}
       <div className="heading">
         <h1>Two Pointers</h1>
       </div>

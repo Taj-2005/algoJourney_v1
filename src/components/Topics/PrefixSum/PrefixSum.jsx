@@ -9,11 +9,57 @@ import {
   getDoc,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
+import * as XLSX from 'xlsx';
+import { db } from '../../../firebase/firebaseConfig';
+import {getDocs} from 'firebase/firestore';
+
+
+
+async function exportToExcelP() {
+  const data = [];
+  try {
+      const querySnapshot = await getDocs(collection(db, "users_PrefixSum"));
+      if (querySnapshot.empty) {
+      console.log('No documents found in the "users" collection.');
+      alert('No data available to export. The "users" collection is empty.');
+      return;
+      }
+
+      querySnapshot.forEach((doc) => {
+      const submission = doc.data();
+      data.push([
+          submission.name,
+          submission.enrollmentNumber,
+          submission.checkboxCount,
+          submission.section,
+      ]);
+      });
+
+      const ws = XLSX.utils.aoa_to_sheet([
+      ["Name", "Enrollment Number", "N of Q Solved","Section"],
+      ...data,
+      ]);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Submissions Data");
+      XLSX.writeFile(wb, "prefixSum_data.xlsx");
+
+      console.log("Export to Excel complete!");
+      alert("Export to Excel completed successfully.");
+  } catch (error) {
+      console.error("Error fetching data:", error);
+      alert("An error occurred while exporting the data. Please check the console for more details.");
+  }
+  };
+
+
+
 
 function PrefixSum() {
   const [questions, setQuestions] = useState([]);
   const [checkedQuestions, setCheckedQuestions] = useState({});
-  const [section, setSection] = useState(''); // State to store section info
+  const [section, setSection] = useState('');
+  const [userName, setUserName] = useState('');
+  const [enrollmentNumber, setEnrollmentNumber] = useState('');
   const auth = getAuth();
   const db = getFirestore();
   const userId = auth.currentUser?.uid;
@@ -49,14 +95,17 @@ function PrefixSum() {
         const userDoc = await getDoc(userDocRef);
 
         if (userDoc.exists()) {
-          const { enrollmentNumber, section } = userDoc.data(); // Get section from user data
-          setSection(section); // Store the section value
+          const { name, enrollmentNumber, section } = userDoc.data();
+          setUserName(name); // Store user name
+          setEnrollmentNumber(enrollmentNumber); // Store enrollment number
+          setSection(section); // Store section
+
           const userPrefixSumRef = doc(db, `user_prefixSum/${enrollmentNumber}`);
           const userPrefixSumDoc = await getDoc(userPrefixSumRef);
 
           if (userPrefixSumDoc.exists()) {
             console.log('Fetched user checked questions:', userPrefixSumDoc.data());
-            setCheckedQuestions(userPrefixSumDoc.data().questions || {}); // Ensure data format matches
+            setCheckedQuestions(userPrefixSumDoc.data().questions || {});
           }
         }
       } catch (error) {
@@ -78,34 +127,37 @@ function PrefixSum() {
       if (userDoc.exists()) {
         const { enrollmentNumber } = userDoc.data();
         const userPrefixSumRef = doc(db, `user_prefixSum/${enrollmentNumber}`);
+        const usersPrefixSumRef = doc(db, `users_PrefixSum/${enrollmentNumber}`);
 
-        // Use the functional state update to make sure we work with the latest state
-        setCheckedQuestions(prevCheckedQuestions => {
+        setCheckedQuestions((prevCheckedQuestions) => {
           const updatedCheckedQuestions = { ...prevCheckedQuestions };
 
-          // Toggle the checkbox for the specific question
           if (updatedCheckedQuestions[question.id]) {
-            // If question is already checked, remove it
             delete updatedCheckedQuestions[question.id];
           } else {
-            // If question is not checked, add it
             updatedCheckedQuestions[question.id] = {
               questionText: question.question,
               questionId: question.id,
-              link: question.link, // Add the link as well
+              link: question.link,
             };
           }
 
-          // Prepare the data to update Firestore
-          const dataToUpdate = {
-            section: section, // Add the section value to Firestore
-            questions: updatedCheckedQuestions, // Update the checked questions
-          };
+          const checkboxCount = Object.keys(updatedCheckedQuestions).length; // Count checked checkboxes
 
-          // Update Firestore with the changes only if there is a change in the state
-          setDoc(userPrefixSumRef, dataToUpdate);
-          console.log('Updated checked questions:', updatedCheckedQuestions);
+          // Update Firestore with updated questions and count
+          setDoc(userPrefixSumRef, {
+            section,
+            questions: updatedCheckedQuestions,
+          });
 
+          setDoc(usersPrefixSumRef, {
+            name: userName,
+            enrollmentNumber,
+            section,
+            checkboxCount, // Save the count of checked checkboxes
+          });
+
+          console.log('Updated checked questions and count:', checkboxCount);
           return updatedCheckedQuestions;
         });
       }
@@ -117,12 +169,13 @@ function PrefixSum() {
   return (
     <>
       <Header />
+      {/* <button onClick={exportToExcelP}>Export to Excel</button> */}
       <div className="heading">
         <h1>Prefix Sum</h1>
       </div>
       <div>
         {questions.length === 0 ? (
-          <p>No questions available</p> // Message when no questions are available
+          <p>No questions available</p>
         ) : (
           questions.map((qtn) => (
             <div className="questionList" key={qtn.id}>
@@ -135,8 +188,8 @@ function PrefixSum() {
                 <input
                   className="check"
                   type="checkbox"
-                  checked={!!checkedQuestions[qtn.id]} // Keep state persistent
-                  onChange={() => handleCheckboxChange(qtn)} // Handle changes
+                  checked={!!checkedQuestions[qtn.id]}
+                  onChange={() => handleCheckboxChange(qtn)}
                 />
               </div>
             </div>
