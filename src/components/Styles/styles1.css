@@ -140,6 +140,10 @@ body{
 .alignment h1{
     margin-left: 1vw;
 }
+.h1 a{
+    text-decoration: none;
+    color: black;
+}
 .alignment p{
     margin-right: 1vw;
 }

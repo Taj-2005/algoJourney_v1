@@ -10,7 +10,7 @@ function Header() {
     }
   return (
     <header className="alignment">
-            <h1 className='h1'>AlgoJourney</h1>
+            <h1 className='h1'><a href='https://algojourney-dsa-nst.vercel.app/'>AlgoJourney</a></h1>
             <div className='user-icon-wrapper' onMouseEnter={handleMouseEnter}>
                 <img className='icon' src={userProfile} alt='User Icon' />
                 {showTooltip && (

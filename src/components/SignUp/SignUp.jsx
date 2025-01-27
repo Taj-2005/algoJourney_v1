@@ -36,7 +36,7 @@ import algo from '../Assets/dsa.jpeg';
   return (
     <>
     <div className="alignment">
-      <h1 className="h1">AlgoJourney</h1>
+    <h1 className='h1'><a href='https://algojourney-dsa-nst.vercel.app/'>AlgoJourney</a></h1>
       <p>
         Already have an account?{" "}
         <span className="already" onClick={() => navigate("/Login")}>
