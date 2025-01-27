@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import '../Styles/styles1.css';
 import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
@@ -11,6 +11,49 @@ function Concepts() {
     const handleNavigation = (path) => {
         navigate(path);
 };
+
+const [prefix, setPrefix] = useState('0%'); // Initialize with '0%' as a string
+const [pointer, setTwoPointer] = useState('0%'); // Initialize with '0%' as a string
+const [loading, setLoading] = useState(false); // For loading state
+
+// Fetch percentage from Firestore
+async function fetchPercentage(topic) {
+  try {
+    setLoading(true); // Start loading
+    const querySnapshot = await getDocs(collection(db, topic));
+    if (querySnapshot.empty) {
+      console.log(`No documents found in the "${topic}" collection.`);
+      setLoading(false);
+      return;
+    }
+
+    // Assuming the collection contains a single document
+    const doc = querySnapshot.docs[0];
+    const data = doc.data();
+    const fetchedPercentage = data.percentage; // Getting the percentage as a string
+    if (topic === 'users_PrefixSum') {
+      setPrefix(fetchedPercentage); // Update prefix state
+    } else if (topic === 'users_TwoPointers') {
+      setTwoPointer(fetchedPercentage); // Update pointer state
+    }
+
+    setLoading(false); // Stop loading
+  } catch (error) {
+    console.error("Error fetching percentage data:", error);
+    setLoading(false); // Stop loading in case of error
+  }
+}
+
+// Fetch the percentage for PrefixSum on component mount
+useEffect(() => {
+  fetchPercentage("users_PrefixSum");
+}, []);
+
+// Fetch the percentage for TwoPointers on component mount
+useEffect(() => {
+  fetchPercentage("users_TwoPointers");
+}, []);
+
 
 async function exportToExcel() {
     const data = [];
@@ -55,10 +98,26 @@ async function exportToExcel() {
         <div className='topics'>
             <button id="prefixSum" onClick={() => handleNavigation("/PrefixSum")} className='topic'>
                 <h2>Prefix Sum</h2>
+                <div class="progress">
+                    <div class="progress-bar-background">
+                        <div style={{height: '100%',width:prefix,backgroundColor: 'green',borderRadius: '5px'}} id="progress-bar">
+                        </div>
+                        <p>{prefix}</p>
+                    </div>
+                </div>
             </button>
-            <button id='prefixSum' onClick={() => handleNavigation("/TwoPointers")} className='topic'>
+
+            <button id='twoPointers' onClick={() => handleNavigation("/TwoPointers")} className='topic'>
                 <h2 >Two Pointers</h2>
+                <div class="progress">
+                    <div class="progress-bar-background">
+                        <div style={{height: '100%',width:pointer,backgroundColor: 'green',borderRadius: '5px'}} id="progress-bar">
+                        </div>
+                        <p>{pointer}</p>
+                    </div>
+                </div>
             </button>
+            
             <button id='timeComplexity' className='topic'>
                 <h2 >Time Complexity</h2>
                 <p>Coming Soon.....</p>

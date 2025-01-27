@@ -1,4 +1,16 @@
 /* Login Signup Page */
+@media (min-width: 575px) and (max-width: 830px){
+    .container{
+        width: 40vw !important;
+    }
+    .containerOnce{
+        width: 43vw !important;
+        height: 60vh !important;
+    }
+    .logout{
+        width: 7vw !important;
+    }
+}
 @media (max-width: 575px) {
     .h1{
         font-size: 20px;
@@ -29,7 +41,14 @@
     .image{
         width: 60vw !important;
         height: 60vw !important;
-        margin-top: -3vh;
+        margin-top: -3vh !important;
+    }
+    @media (min-width: 470px) and (max-width: 575px){
+        .image{
+            width: 50vw !important;
+            height: 50vw !important;
+            margin-top: 0 !important;
+        }
     }
     .remember{
         gap: 2vw !important;
@@ -68,6 +87,7 @@
     .logout{
         font-size: 0.8em !important;
         text-align: center !important;
+        width: 18vw !important;
     }
     .topics{
         padding-left: 3vw !important;
@@ -169,20 +189,21 @@ body{
     box-shadow: 1px 1px 10px 1px grey;
     transition: transform 1s ease;
 }
-.containerOnce:hover{
-    transform: scale(1.1);
-    box-shadow: 1px 1px 10px 1px grey;
-    transition: transform 1s ease;
-}
 .containerOnce{
-    background-color:#f4f6fd;
+    background-color:#f3f3f3;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 40vw;
+    width: 30vw;
     height: 60vh;
     border: 1px solid #e1e1e1;
     border-radius: 30px;
+    transition: transform 1s ease;
+}
+.containerOnce:hover{
+    transform: scale(1.1);
+    box-shadow: 1px 1px 10px 1px grey;
     transition: transform 1s ease;
 }
 .text{
@@ -317,10 +338,12 @@ header{
     text-align: center;
 }
 .logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: #1A1A1A;
   color: white;
   border: none;
-  padding: 8px 16px;
   cursor: pointer;
   border-radius: 4px;
   font-size: 14px;
@@ -481,4 +504,31 @@ body{
     scale: 2;
     border: none;
     background-color: green;
+}
+
+/* progressBar */
+.progress {
+    text-align: center;
+    width: 20vw;
+}
+
+.progress-bar-background {
+    width: 100%;
+    background-color: #f3f3f3;
+    height: 1vh;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 50%;
+    background-color: green;
+    border-radius: 5px;
+}
+
+#percentage-display {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
 }

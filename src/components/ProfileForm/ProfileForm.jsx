@@ -96,7 +96,7 @@ function UserDetailsForm() {
     <>    
     <Header/>
     <div className="mainOnce">
-        <div className="container">
+        <div className="containerOnce">
             <div className="textOnce">User Details Form</div>
             <div className='underline user'></div>
             <form className="inputs" onSubmit={handleSubmit}>

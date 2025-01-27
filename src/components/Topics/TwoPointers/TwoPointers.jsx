@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Header from '../../Header/Header';
 import {
   getFirestore,
@@ -7,48 +7,49 @@ import {
   doc,
   setDoc,
   getDoc,
+  writeBatch,
 } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 import * as XLSX from 'xlsx';
 import { db } from '../../../firebase/firebaseConfig';
-import {getDocs} from 'firebase/firestore';
-
+import { getDocs } from 'firebase/firestore';
 
 async function exportToExcelT() {
-    const data = [];
-    try {
-        const querySnapshot = await getDocs(collection(db, "users_TwoPointers"));
-        if (querySnapshot.empty) {
-        console.log('No documents found in the "users" collection.');
-        alert('No data available to export. The "users" collection is empty.');
-        return;
-        }
-
-        querySnapshot.forEach((doc) => {
-        const submission = doc.data();
-        data.push([
-            submission.name,
-            submission.enrollmentNumber,
-            submission.checkboxCount,
-            submission.section,
-        ]);
-        });
-
-        const ws = XLSX.utils.aoa_to_sheet([
-        ["Name", "Enrollment Number", "N of Q Solved","Section"],
-        ...data,
-        ]);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Submissions Data");
-        XLSX.writeFile(wb, "twoPointers_data.xlsx");
-
-        console.log("Export to Excel complete!");
-        alert("Export to Excel completed successfully.");
-    } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("An error occurred while exporting the data. Please check the console for more details.");
+  const data = [];
+  try {
+    const querySnapshot = await getDocs(collection(db, 'users_TwoPointers'));
+    if (querySnapshot.empty) {
+      console.log('No documents found in the "users" collection.');
+      alert('No data available to export. The "users" collection is empty.');
+      return;
     }
-    };
+
+    querySnapshot.forEach((doc) => {
+      const submission = doc.data();
+      data.push([
+        submission.name,
+        submission.enrollmentNumber,
+        submission.checkboxCount,
+        submission.section,
+        submission.percentage, // Added percentage field
+      ]);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet([
+      ['Name', 'Enrollment Number', 'N of Q Solved', 'Section', 'Percentage'],
+      ...data,
+    ]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Submissions Data');
+    XLSX.writeFile(wb, 'twoPointers_data.xlsx');
+
+    console.log('Export to Excel complete!');
+    alert('Export to Excel completed successfully.');
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    alert('An error occurred while exporting the data. Please check the console for more details.');
+  }
+}
 
 function TwoPointers() {
   const [questions, setQuestions] = useState([]);
@@ -113,54 +114,70 @@ function TwoPointers() {
     fetchUserCheckedQuestions();
   }, [db, userId]);
 
-  const handleCheckboxChange = async (question) => {
+  // Handle checkbox change
+  const handleCheckboxChange = useCallback(async (question) => {
     if (!userId) return;
 
-    try {
-      const userDocRef = doc(db, 'users', userId);
-      const userDoc = await getDoc(userDocRef);
+    setCheckedQuestions((prevCheckedQuestions) => {
+      const updatedCheckedQuestions = { ...prevCheckedQuestions };
 
-      if (userDoc.exists()) {
-        const { enrollmentNumber } = userDoc.data();
-        const userTwoPointersRef = doc(db, `user_twoPointers/${enrollmentNumber}`);
-        const usersTwoPointersRef = doc(db, `users_TwoPointers/${enrollmentNumber}`);
-
-        setCheckedQuestions((prevCheckedQuestions) => {
-          const updatedCheckedQuestions = { ...prevCheckedQuestions };
-
-          if (updatedCheckedQuestions[question.id]) {
-            delete updatedCheckedQuestions[question.id];
-          } else {
-            updatedCheckedQuestions[question.id] = {
-              questionText: question.question,
-              questionId: question.id,
-              link: question.link,
-            };
-          }
-
-          const checkboxCount = Object.keys(updatedCheckedQuestions).length; // Count checked checkboxes
-
-          // Update Firestore with updated questions and count
-          setDoc(userTwoPointersRef, {
-            section,
-            questions: updatedCheckedQuestions,
-          });
-
-          setDoc(usersTwoPointersRef, {
-            name: userName,
-            enrollmentNumber,
-            section,
-            checkboxCount, // Save the count of checked checkboxes
-          });
-
-          console.log('Updated checked questions and count:', checkboxCount);
-          return updatedCheckedQuestions;
-        });
+      if (updatedCheckedQuestions[question.id]) {
+        delete updatedCheckedQuestions[question.id];
+      } else {
+        updatedCheckedQuestions[question.id] = {
+          questionText: question.question,
+          questionId: question.id,
+          link: question.link,
+        };
       }
-    } catch (error) {
-      console.error('Error handling checkbox change:', error);
-    }
-  };
+
+      // Update the count locally
+      const checkboxCount = Object.keys(updatedCheckedQuestions).length;
+
+      // Calculate the percentage based on the updated count and total questions
+      const totalQuestions = questions.length;
+      const percentage = (checkboxCount / totalQuestions) * 100;
+
+      // Immediately update the local state without waiting for Firestore
+      setCheckedQuestions(updatedCheckedQuestions);
+
+      // Schedule the Firestore update in the background after a short delay
+      setTimeout(async () => {
+        try {
+          const batch = writeBatch(db);
+          const userDocRef = doc(db, 'users', userId);
+          const userDoc = await getDoc(userDocRef);
+
+          if (userDoc.exists()) {
+            const { enrollmentNumber } = userDoc.data();
+            const userTwoPointersRef = doc(db, `user_twoPointers/${enrollmentNumber}`);
+            const usersTwoPointersRef = doc(db, `users_TwoPointers/${enrollmentNumber}`);
+
+            // Add batch operations
+            batch.set(userTwoPointersRef, {
+              section,
+              questions: updatedCheckedQuestions,
+            });
+            batch.set(usersTwoPointersRef, {
+              name: userName,
+              enrollmentNumber,
+              section,
+              checkboxCount, // Save the count of checked checkboxes
+              percentage: `${percentage.toFixed(2)}%`, // Save the percentage as a string
+            });
+
+            // Commit the batch
+            await batch.commit();
+            console.log('Firestore batch update complete!');
+          }
+        } catch (error) {
+          console.error('Error committing Firestore batch:', error);
+        }
+      }, 300); // Delay Firestore write by 300ms
+
+      return updatedCheckedQuestions;
+    });
+  }, [questions, section, userName, db, userId]);
 
   return (
     <>
