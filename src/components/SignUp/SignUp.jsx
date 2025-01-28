@@ -46,6 +46,9 @@ import algo from '../Assets/dsa.jpeg';
     </div>
     <hr></hr>
     <div className="main">
+        <div>
+          <img className="image" src={algo} alt=""></img>
+        </div>
         <div className="container">
           <div className="text">Sign Up</div>
           <div className="underline"></div>
@@ -65,9 +68,6 @@ import algo from '../Assets/dsa.jpeg';
             </div>
             <button className="submit" type="submit">Sign Up</button>
           </form>
-        </div>
-        <div>
-          <img className="image" src={algo} alt=""></img>
         </div>
     </div>
     </>
