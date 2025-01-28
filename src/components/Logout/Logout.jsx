@@ -3,7 +3,6 @@ import { signOut } from 'firebase/auth';
 import { auth } from '../../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { browserLocalPersistence } from "firebase/auth";
-import '../Styles/styles1.css';
 
 const LogoutButton = () => {
   const navigate = useNavigate();

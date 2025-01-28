@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase/firebaseConfig.js";
-import '../Styles/styles1.css';
 import mail from '../Assets/email2.png';
 import pass from '../Assets/password.png';
 import padlock from '../Assets/padlock.png';

@@ -118,83 +118,83 @@ async function exportToExcel() {
                 </div>
             </button>
             
-            <button id='timeComplexity' className='topic'>
+            <button id='timeComplexity' className='topicX notallowed'>
                 <h2 >Time Complexity</h2>
                 <p>Coming Soon.....</p>
             </button>
 
 
-            <button id="basicMaths" className='topic'>
+            <button id="basicMaths" className='topicX'>
                 <h2>Basic Maths</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='complexity' className='topic'>
+            <button id='complexity' className='topicX'>
                 <h2 >Complexity Analysis</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='arrays1d' className='topic'>
+            <button id='arrays1d' className='topicX'>
                 <h2>1D Arrays</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='arrays2d' className='topic'>
+            <button id='arrays2d' className='topicX'>
                 <h2>2D Arrays</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='strings' className='topic'>
+            <button id='strings' className='topicX'>
                 <h2>Strings</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='sorting' className='topic'>
+            <button id='sorting' className='topicX'>
                 <h2>Sorting</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='searching' className='topic'>
+            <button id='searching' className='topicX'>
                 <h2>Searching</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='linkedLists' className='topic'>
+            <button id='linkedLists' className='topicX'>
                 <h2>Linked Lists</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='hashing' className='topic'>
+            <button id='hashing' className='topicX'>
                 <h2>Hashing</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='stacks' className='topic'>
+            <button id='stacks' className='topicX'>
                 <h2>Stacks</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='queues' className='topic'>
+            <button id='queues' className='topicX'>
                 <h2>Queues</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='trees' className='topic'>
+            <button id='trees' className='topicX'>
                 <h2>Trees</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='advTrees' className='topic'>
+            <button id='advTrees' className='topicX'>
                 <h2>Adv Trees</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='heaps' className='topic'>
+            <button id='heaps' className='topicX'>
                 <h2>Heaps</h2>
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='priorityQueues' className='topic'>
+            <button id='priorityQueues' className='topicX'>
                 <h2>Priority Queues</h2>
             <p>Coming Soon.....</p>
             </button>
