@@ -15,6 +15,7 @@ function Concepts() {
 const [prefix, setPrefix] = useState('0%'); // Initialize with '0%' as a string
 const [pointer, setTwoPointer] = useState('0%'); // Initialize with '0%' as a string
 const [arrays2d, setArrays2D] = useState('0%'); // Initialize with '0%' as a string
+const [binary, setBinarySearch] = useState('0%'); // Initialize with '0%' as a string
 const [loading, setLoading] = useState(false); // For loading state
 
 // Fetch percentage from Firestore
@@ -38,6 +39,8 @@ async function fetchPercentage(topic) {
       setTwoPointer(fetchedPercentage); // Update pointer state
     } else if (topic === 'users_Arrays2D') {
       setArrays2D(fetchedPercentage); // Update pointer state
+    }else if (topic === 'users_BinarySearch') {
+      setBinarySearch(fetchedPercentage); // Update pointer state
     }
 
     setLoading(false); // Stop loading
@@ -59,6 +62,10 @@ useEffect(() => {
 
 useEffect(() => {
   fetchPercentage("users_Arrays2D");
+}, []);
+
+useEffect(() => {
+  fetchPercentage("users_BinarySearch");
 }, []);
 
 
@@ -133,6 +140,18 @@ async function exportToExcel() {
                         <div style={{height: '100%',width:arrays2d,backgroundColor: 'green',borderRadius: '5px'}} id="progress-bar">
                         </div>
                         <p>{arrays2d}</p>
+                    </div>
+                </div>
+            </button>
+
+
+            <button id='binarySearch' onClick={() => handleNavigation("/BinarySearch")} className='topic'>
+                <h2 >Binary Search</h2>
+                <div class="progress">
+                    <div class="progress-bar-background">
+                        <div style={{height: '100%',width:binary,backgroundColor: 'green',borderRadius: '5px'}} id="progress-bar">
+                        </div>
+                        <p>{binary}</p>
                     </div>
                 </div>
             </button>
