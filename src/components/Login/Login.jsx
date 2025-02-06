@@ -92,7 +92,7 @@ function Login() {
                 <button className="submit" type="submit">Login</button>
             </form>
             <div>
-                <h3 style={{padding : "1rem"}}>Demo Credentials</h3>
+                <h3 style={{padding : "1rem"}}>Demo Credentials </h3>
                 <p style={{fontSize : "0.7rem",textAlign : "center"}}>Email     : demo@gmail.com</p>
                 <p style={{fontSize : "0.7rem",textAlign : "center",marginLeft: "-0.4rem"}}>Password : demo@1234</p>
 
