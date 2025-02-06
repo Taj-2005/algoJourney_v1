@@ -138,9 +138,11 @@ body{
     height: 40vw;
 }
 .alignment h1{
+    font-family: 'Space Grotesk';
     margin-left: 1vw;
 }
 .h1 a{
+    font-family: 'Space Grotesk';
     text-decoration: none;
     color: black;
 }

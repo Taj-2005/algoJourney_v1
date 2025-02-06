@@ -61,7 +61,7 @@ function Login() {
     <>
         <div className="alignment">
         {/* <img src="" alt=""></img> */}
-        <h1 className='h1'><a href='https://algojourney-dsa-nst.vercel.app/'>AlgoJourney</a></h1>
+        <h1 className='h1'><a href='https://algojourney-dsa-nst.vercel.app/'>algoJourney</a></h1>
         <p>
             Don’t have an account?{" "}<br></br>
             <span className="already" onClick={() => navigate("/Signup")}>
