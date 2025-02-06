@@ -133,7 +133,7 @@ function PrefixSum() {
 
       const checkboxCount = Object.keys(updatedCheckedQuestions).length;
       const totalQuestions = questions.length;
-      const percentage = (checkboxCount / totalQuestions) * 100;
+      const percentage = (Number(checkboxCount / totalQuestions)) * 100;
 
       // Immediate UI update
       setCheckedQuestions(updatedCheckedQuestions);
@@ -160,7 +160,7 @@ function PrefixSum() {
               enrollmentNumber,
               section,
               checkboxCount, // Save the count of checked checkboxes
-              percentage: `${percentage.toFixed(2)}%`, // Save the percentage as a string
+              percentage: `${percentage.toFixed(0)}%`, // Save the percentage as a string
             });
 
             // Commit the batch update

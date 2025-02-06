@@ -14,10 +14,10 @@ import * as XLSX from 'xlsx';
 import { db } from '../../../firebase/firebaseConfig';
 import { getDocs } from 'firebase/firestore';
 
-async function exportToExcelT() {
+async function exportToExcelP() {
   const data = [];
   try {
-    const querySnapshot = await getDocs(collection(db, 'users_TwoPointers'));
+    const querySnapshot = await getDocs(collection(db, 'users_Arrays2D'));
     if (querySnapshot.empty) {
       console.log('No documents found in the "users" collection.');
       alert('No data available to export. The "users" collection is empty.');
@@ -41,7 +41,7 @@ async function exportToExcelT() {
     ]);
     const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Submissions Data');
-    XLSX.writeFile(wb, 'twoPointers_data.xlsx');
+    XLSX.writeFile(wb, 'arrays2d_data.xlsx');
 
     console.log('Export to Excel complete!');
     alert('Export to Excel completed successfully.');
@@ -51,7 +51,7 @@ async function exportToExcelT() {
   }
 }
 
-function TwoPointers() {
+function PrefixSum() {
   const [questions, setQuestions] = useState([]);
   const [checkedQuestions, setCheckedQuestions] = useState({});
   const [section, setSection] = useState('');
@@ -64,7 +64,7 @@ function TwoPointers() {
   useEffect(() => {
     const fetchQuestions = async () => {
       try {
-        const questionsCollection = collection(db, 'twoPointers');
+        const questionsCollection = collection(db, 'arrays2d');
         const unsubscribe = onSnapshot(questionsCollection, (snapshot) => {
           if (snapshot.empty) {
             console.log('No questions found in the Firestore collection.');
@@ -97,12 +97,12 @@ function TwoPointers() {
           setEnrollmentNumber(enrollmentNumber); // Store enrollment number
           setSection(section); // Store section
 
-          const userTwoPointersRef = doc(db, `user_twoPointers/${enrollmentNumber}`);
-          const userTwoPointersDoc = await getDoc(userTwoPointersRef);
+          const userArrays2DRef = doc(db, `user_arrays2d/${enrollmentNumber}`);
+          const userArrays2dDoc = await getDoc(userArrays2DRef);
 
-          if (userTwoPointersDoc.exists()) {
-            console.log('Fetched user checked questions:', userTwoPointersDoc.data());
-            setCheckedQuestions(userTwoPointersDoc.data().questions || {});
+          if (userArrays2dDoc.exists()) {
+            console.log('Fetched user checked questions:', userArrays2dDoc.data());
+            setCheckedQuestions(userArrays2dDoc.data().questions || {});
           }
         }
       } catch (error) {
@@ -114,7 +114,7 @@ function TwoPointers() {
     fetchUserCheckedQuestions();
   }, [db, userId]);
 
-  // Handle checkbox change
+  // Handle checkbox change with local state update and delayed Firestore write
   const handleCheckboxChange = useCallback(async (question) => {
     if (!userId) return;
 
@@ -131,17 +131,14 @@ function TwoPointers() {
         };
       }
 
-      // Update the count locally
       const checkboxCount = Object.keys(updatedCheckedQuestions).length;
-
-      // Calculate the percentage based on the updated count and total questions
       const totalQuestions = questions.length;
       const percentage = (Number(checkboxCount / totalQuestions)) * 100;
 
-      // Immediately update the local state without waiting for Firestore
+      // Immediate UI update
       setCheckedQuestions(updatedCheckedQuestions);
 
-      // Schedule the Firestore update in the background after a short delay
+      // Batch Firestore update with delay
       setTimeout(async () => {
         try {
           const batch = writeBatch(db);
@@ -150,15 +147,15 @@ function TwoPointers() {
 
           if (userDoc.exists()) {
             const { enrollmentNumber } = userDoc.data();
-            const userTwoPointersRef = doc(db, `user_twoPointers/${enrollmentNumber}`);
-            const usersTwoPointersRef = doc(db, `users_TwoPointers/${enrollmentNumber}`);
+            const userArrays2DRef = doc(db, `user_arrays2d/${enrollmentNumber}`);
+            const usersPrefixSumRef = doc(db, `users_Arrays2D/${enrollmentNumber}`);
 
             // Add batch operations
-            batch.set(userTwoPointersRef, {
+            batch.set(userArrays2DRef, {
               section,
               questions: updatedCheckedQuestions,
             });
-            batch.set(usersTwoPointersRef, {
+            batch.set(usersPrefixSumRef, {
               name: userName,
               enrollmentNumber,
               section,
@@ -166,7 +163,7 @@ function TwoPointers() {
               percentage: `${percentage.toFixed(0)}%`, // Save the percentage as a string
             });
 
-            // Commit the batch
+            // Commit the batch update
             await batch.commit();
             console.log('Firestore batch update complete!');
           }
@@ -182,9 +179,9 @@ function TwoPointers() {
   return (
     <>
       <Header />
-      {/* <button onClick={exportToExcelT}>Export to Excel</button> */}
+      {/* <button onClick={exportToExcelP}>Export to Excel</button> */}
       <div className="heading">
-        <h1>Two Pointers</h1>
+        <h1>2D Arrays - Matrix</h1>
       </div>
       <div>
         {questions.length === 0 ? (
@@ -213,4 +210,4 @@ function TwoPointers() {
   );
 }
 
-export default TwoPointers;
+export default PrefixSum;

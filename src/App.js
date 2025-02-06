@@ -6,6 +6,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 import ProfileForm from './components/ProfileForm/ProfileForm';
 import PrefixSum from './components/Topics/PrefixSum/PrefixSum';
 import TwoPointers from './components/Topics/TwoPointers/TwoPointers';
+import Arrays2D from './components/Topics/Arrays2D/Arrays2D';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -48,6 +49,7 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/PrefixSum" element={<PrefixSum />} />
         <Route path="/TwoPointers" element={<TwoPointers />} />
+        <Route path="/Arrays2D" element={<Arrays2D />} />
         <Route
           path="/Dashboard"
           element={

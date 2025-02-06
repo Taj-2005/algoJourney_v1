@@ -14,6 +14,7 @@ function Concepts() {
 
 const [prefix, setPrefix] = useState('0%'); // Initialize with '0%' as a string
 const [pointer, setTwoPointer] = useState('0%'); // Initialize with '0%' as a string
+const [arrays2d, setArrays2D] = useState('0%'); // Initialize with '0%' as a string
 const [loading, setLoading] = useState(false); // For loading state
 
 // Fetch percentage from Firestore
@@ -35,6 +36,8 @@ async function fetchPercentage(topic) {
       setPrefix(fetchedPercentage); // Update prefix state
     } else if (topic === 'users_TwoPointers') {
       setTwoPointer(fetchedPercentage); // Update pointer state
+    } else if (topic === 'users_Arrays2D') {
+      setArrays2D(fetchedPercentage); // Update pointer state
     }
 
     setLoading(false); // Stop loading
@@ -52,6 +55,10 @@ useEffect(() => {
 // Fetch the percentage for TwoPointers on component mount
 useEffect(() => {
   fetchPercentage("users_TwoPointers");
+}, []);
+
+useEffect(() => {
+  fetchPercentage("users_Arrays2D");
 }, []);
 
 
@@ -117,7 +124,22 @@ async function exportToExcel() {
                     </div>
                 </div>
             </button>
+
+
+            <button id='arrays2d' onClick={() => handleNavigation("/Arrays2D")} className='topic'>
+                <h2 >2D Arrays</h2>
+                <div class="progress">
+                    <div class="progress-bar-background">
+                        <div style={{height: '100%',width:arrays2d,backgroundColor: 'green',borderRadius: '5px'}} id="progress-bar">
+                        </div>
+                        <p>{arrays2d}</p>
+                    </div>
+                </div>
+            </button>
             
+            
+
+
             <button id='timeComplexity' className='topicX notallowed'>
                 <h2 >Time Complexity</h2>
                 <p>Coming Soon.....</p>
@@ -139,10 +161,6 @@ async function exportToExcel() {
             <p>Coming Soon.....</p>
             </button>
 
-            <button id='arrays2d' className='topicX'>
-                <h2>2D Arrays</h2>
-            <p>Coming Soon.....</p>
-            </button>
 
             <button id='strings' className='topicX'>
                 <h2>Strings</h2>
