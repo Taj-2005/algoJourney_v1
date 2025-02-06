@@ -5,7 +5,6 @@ import { auth } from "../../firebase/firebaseConfig";
 import mail from '../Assets/email2.png';
 import pass from '../Assets/password.png';
 import algo from '../Assets/dsa.jpeg';
-import { responsiveFontSizes } from "@mui/material";
 
 function Login() {
   const [email, setEmail] = useState("");
