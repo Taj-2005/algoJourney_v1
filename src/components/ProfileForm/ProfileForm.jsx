@@ -61,28 +61,28 @@ function UserDetailsForm() {
   };
 
   // Validate the college email after submitting the form
-  const validateEmail = (email) => {
-    const validEmailPattern =
-      /(@nst.rishihood.edu.in|@Newtonschool.Co|@learner.rishihood.edu.in|@rishihood.edu.in)$/; // Check if email contains valid domain
-    return validEmailPattern.test(email);
-  };
+  // const validateEmail = (email) => {
+  //   const validEmailPattern =
+  //     /(@)$/; // Check if email contains valid domain
+  //   return validEmailPattern.test(email);
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!userId) return;
 
-    // Validate email before submitting the form
-    if (!validateEmail(formData.collegeEmail)) {
-      alert('You are not authorized to access this website.');
-      return; // Don't submit if email is invalid
-    }
+    // // Validate email before submitting the form
+    // if (!validateEmail(formData.collegeEmail)) {
+    //   alert('You are not authorized to access this website.');
+    //   return; // Don't submit if email is invalid
+    // }
 
     const userDocRef = doc(db, 'users', userId);
 
     try {
       await setDoc(userDocRef, formData);
       alert('Data saved successfully!');
-      navigate('/Dashboard');
+      window.location.href = '/Dashboard';
     } catch (error) {
       console.error('Error saving user data:', error);
     }
@@ -111,7 +111,14 @@ function UserDetailsForm() {
                 </div>
                 <div className="input">
                     <img className="iconsf" src={sec} alt=""></img>
-                    <input className="credentials" type="text" name="section" value={formData.section} onChange={handleInputChange} placeholder='Section' maxLength={1} required />
+                    <select className="credentials" name="section" value={formData.section} onChange={handleInputChange} placeholder="Section" required>
+                      <option>NA</option>
+                      <option>A</option>
+                      <option>B</option>
+                      <option>C</option>
+                      <option>D</option>
+                      <option>E</option>
+                    </select>
                 </div>
                 <div className="input">
                     <img className="iconsf" src={mobile} alt=""></img>

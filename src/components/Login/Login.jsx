@@ -5,6 +5,7 @@ import { auth } from "../../firebase/firebaseConfig";
 import mail from '../Assets/email2.png';
 import pass from '../Assets/password.png';
 import algo from '../Assets/dsa.jpeg';
+import { responsiveFontSizes } from "@mui/material";
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -90,6 +91,12 @@ function Login() {
                 </div>
                 <button className="submit" type="submit">Login</button>
             </form>
+            <div>
+                <h3 style={{padding : "1rem"}}>Demo Credentials</h3>
+                <p style={{fontSize : "0.7rem",textAlign : "center"}}>Email     : demo@gmail.com</p>
+                <p style={{fontSize : "0.7rem",textAlign : "center",marginLeft: "-0.4rem"}}>Password : demo@1234</p>
+
+            </div>
             </div>
             <div>
                 <img className="image" src={algo} alt=""></img>

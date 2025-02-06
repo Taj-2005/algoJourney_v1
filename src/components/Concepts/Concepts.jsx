@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import * as XLSX from 'xlsx';
 import { db } from '../../firebase/firebaseConfig';
 import {getDocs,collection} from 'firebase/firestore';
+import { doc, getDoc } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../../firebase/firebaseConfig";
 
 function Concepts() {
     const navigate = useNavigate();
@@ -12,61 +15,81 @@ function Concepts() {
         navigate(path);
 };
 
-const [prefix, setPrefix] = useState('0%'); // Initialize with '0%' as a string
-const [pointer, setTwoPointer] = useState('0%'); // Initialize with '0%' as a string
-const [arrays2d, setArrays2D] = useState('0%'); // Initialize with '0%' as a string
-const [binary, setBinarySearch] = useState('0%'); // Initialize with '0%' as a string
-const [loading, setLoading] = useState(false); // For loading state
 
-// Fetch percentage from Firestore
+const [prefix, setPrefix] = useState("0%");
+const [pointer, setTwoPointer] = useState("0%");
+const [arrays2d, setArrays2D] = useState("0%");
+const [binary, setBinarySearch] = useState("0%");
+const [loading, setLoading] = useState(false);
+const [user, setUser] = useState(null);
+const [enrollmentNumber, setEnrollmentNumber] = useState(null);
+
+// Listen for authentication state
+useEffect(() => {
+  const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    if (currentUser) {
+      setUser(currentUser);
+      
+      // Fetch user data from "users" collection
+      const userRef = doc(db, "users", currentUser.uid);
+      const userSnap = await getDoc(userRef);
+      
+      if (userSnap.exists()) {
+        setEnrollmentNumber(userSnap.data().enrollmentNumber); // Store enrollment number
+      } else {
+        console.log("User document not found.");
+      }
+    } else {
+      setUser(null);
+      setEnrollmentNumber(null);
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
+
+// Fetch percentage based on enrollment number
 async function fetchPercentage(topic) {
+  if (!enrollmentNumber) return; // Ensure enrollment number is available
+
   try {
-    setLoading(true); // Start loading
-    const querySnapshot = await getDocs(collection(db, topic));
-    if (querySnapshot.empty) {
-      console.log(`No documents found in the "${topic}" collection.`);
-      setLoading(false);
-      return;
+    setLoading(true);
+
+    const docRef = doc(db, topic, enrollmentNumber);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+      const fetchedPercentage = docSnap.data().percentage || "0%";
+      
+      if (topic === "users_PrefixSum") {
+        setPrefix(fetchedPercentage);
+      } else if (topic === "users_TwoPointers") {
+        setTwoPointer(fetchedPercentage);
+      } else if (topic === "users_Arrays2D") {
+        setArrays2D(fetchedPercentage);
+      } else if (topic === "users_BinarySearch") {
+        setBinarySearch(fetchedPercentage);
+      }
+    } else {
+      console.log(`No data found for enrollment ${enrollmentNumber} in "${topic}"`);
     }
 
-    // Assuming the collection contains a single document
-    const doc = querySnapshot.docs[0];
-    const data = doc.data();
-    const fetchedPercentage = data.percentage; // Getting the percentage as a string
-    if (topic === 'users_PrefixSum') {
-      setPrefix(fetchedPercentage); // Update prefix state
-    } else if (topic === 'users_TwoPointers') {
-      setTwoPointer(fetchedPercentage); // Update pointer state
-    } else if (topic === 'users_Arrays2D') {
-      setArrays2D(fetchedPercentage); // Update pointer state
-    }else if (topic === 'users_BinarySearch') {
-      setBinarySearch(fetchedPercentage); // Update pointer state
-    }
-
-    setLoading(false); // Stop loading
+    setLoading(false);
   } catch (error) {
     console.error("Error fetching percentage data:", error);
-    setLoading(false); // Stop loading in case of error
+    setLoading(false);
   }
 }
 
-// Fetch the percentage for PrefixSum on component mount
+// Fetch all topic percentages once enrollment number is available
 useEffect(() => {
-  fetchPercentage("users_PrefixSum");
-}, []);
-
-// Fetch the percentage for TwoPointers on component mount
-useEffect(() => {
-  fetchPercentage("users_TwoPointers");
-}, []);
-
-useEffect(() => {
-  fetchPercentage("users_Arrays2D");
-}, []);
-
-useEffect(() => {
-  fetchPercentage("users_BinarySearch");
-}, []);
+  if (enrollmentNumber) {
+    fetchPercentage("users_PrefixSum");
+    fetchPercentage("users_TwoPointers");
+    fetchPercentage("users_Arrays2D");
+    fetchPercentage("users_BinarySearch");
+  }
+}, [enrollmentNumber]);
 
 
 async function exportToExcel() {
