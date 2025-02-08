@@ -1,3 +1,11 @@
+/* AdminHeader */
+.flexing{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 25vw;
+}
+
 /* Login Signup Page */
 @media (min-width: 575px) and (max-width: 830px){
     .container{
