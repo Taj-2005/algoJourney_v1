@@ -20,6 +20,7 @@ const [prefix, setPrefix] = useState("0%");
 const [pointer, setTwoPointer] = useState("0%");
 const [arrays2d, setArrays2D] = useState("0%");
 const [binary, setBinarySearch] = useState("0%");
+const [recursion, setRecursion] = useState("0%");
 const [loading, setLoading] = useState(false);
 const [user, setUser] = useState(null);
 const [enrollmentNumber, setEnrollmentNumber] = useState(null);
@@ -69,6 +70,8 @@ async function fetchPercentage(topic) {
         setArrays2D(fetchedPercentage);
       } else if (topic === "users_BinarySearch") {
         setBinarySearch(fetchedPercentage);
+      } else if (topic === "users_Recursion") {
+        setRecursion(fetchedPercentage);
       }
     } else {
       console.log(`No data found for enrollment ${enrollmentNumber} in "${topic}"`);
@@ -88,6 +91,7 @@ useEffect(() => {
     fetchPercentage("users_TwoPointers");
     fetchPercentage("users_Arrays2D");
     fetchPercentage("users_BinarySearch");
+    fetchPercentage("users_Recursion");
   }
 }, [enrollmentNumber]);
 
@@ -181,6 +185,16 @@ async function exportToExcel() {
             
             
 
+            <button id='recursion' onClick={() => handleNavigation("/Recursion")} className='topic'>
+                <h2 >Recursion</h2>
+                <div class="progress">
+                    <div class="progress-bar-background">
+                        <div style={{height: '100%',width:recursion,backgroundColor: 'green',borderRadius: '5px'}} id="progress-bar">
+                        </div>
+                        <p>{recursion}</p>
+                    </div>
+                </div>
+            </button>
 
             <button id='timeComplexity' className='topicX notallowed'>
                 <h2 >Time Complexity</h2>

@@ -8,6 +8,7 @@ import PrefixSum from './components/Topics/PrefixSum/PrefixSum';
 import TwoPointers from './components/Topics/TwoPointers/TwoPointers';
 import Arrays2D from './components/Topics/Arrays2D/Arrays2D';
 import BinarySearch from './components/Topics/BinarySearch/BinarySearch';
+import Recursion from './components/Topics/Recursion/Recursion';
 import AdminPage from './components/AdminPage/AdminPage';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
@@ -53,6 +54,7 @@ function App() {
         <Route path="/TwoPointers" element={<TwoPointers />} />
         <Route path="/Arrays2D" element={<Arrays2D />} />
         <Route path="/BinarySearch" element={<BinarySearch />} />
+        <Route path="/Recursion" element={<Recursion />} />
         <Route path="/AdminPage" element={<AdminPage />} />
         <Route
           path="/Dashboard"
